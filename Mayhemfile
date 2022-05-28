@@ -1,5 +1,5 @@
 project: rnshah9/libxkbcommon
-target: libxkbcommon
+target: fuzz-keymap
 
 cmds:
   - cmd: /repo/build/fuzz-keymap @@
