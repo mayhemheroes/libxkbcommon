@@ -1,4 +1,4 @@
-project: rnshah9/libxkbcommon
+project: libxkbcommon
 target: fuzz-keymap
 
 cmds:

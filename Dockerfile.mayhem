@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 ubuntu:22.04
+FROM --platform=linux/amd64 ubuntu:22.04 as builder
 
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential meson afl++ bison flex pkg-config libxml2-dev cmake libwayland-dev wayland-protocols
@@ -7,3 +7,12 @@ COPY . /repo
 WORKDIR /repo/build
 RUN meson .. -Denable-x11=false -Denable-docs=false
 RUN ninja
+
+RUN mkdir -p /deps
+RUN ldd /repo/build/fuzz-keymap | tr -s '[:blank:]' '\n' | grep '^/' | xargs -I % sh -c 'cp % /deps;'
+
+FROM ubuntu:22.04 as package
+
+COPY --from=builder /deps /deps
+COPY --from=builder /repo/build/fuzz-keymap /repo/build/fuzz-keymap
+ENV LD_LIBRARY_PATH=/deps
