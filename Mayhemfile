@@ -2,4 +2,4 @@ project: libxkbcommon
 target: fuzz-keymap
 
 cmds:
-  - cmd: /repo/build/fuzz-keymap @@
+  - cmd: /fuzz-keymap @@

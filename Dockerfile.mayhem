@@ -5,14 +5,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential meson afl+
 
 COPY . /repo
 WORKDIR /repo/build
-RUN meson .. -Denable-x11=false -Denable-docs=false
-RUN ninja
-
-RUN mkdir -p /deps
-RUN ldd /repo/build/fuzz-keymap | tr -s '[:blank:]' '\n' | grep '^/' | xargs -I % sh -c 'cp % /deps;'
+RUN meson .. -Denable-x11=false -Denable-docs=false --prefix=/install
+RUN ninja install
 
 FROM ubuntu:22.04 as package
-
-COPY --from=builder /deps /deps
-COPY --from=builder /repo/build/fuzz-keymap /repo/build/fuzz-keymap
-ENV LD_LIBRARY_PATH=/deps
+COPY --from=builder /repo/build/fuzz-keymap /
