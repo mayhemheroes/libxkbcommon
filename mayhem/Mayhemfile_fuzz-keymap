@@ -1,0 +1,5 @@
+project: libxkbcommon
+target: fuzz-keymap
+
+cmds:
+  - cmd: /fuzz-keymap @@

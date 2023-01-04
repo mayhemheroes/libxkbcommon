@@ -1,0 +1,6 @@
+project: libxkbcommon
+target: istrcmp
+
+cmds:
+  - cmd: /fuzz_istrcmp
+    libfuzzer: true
